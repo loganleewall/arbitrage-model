@@ -12,8 +12,10 @@ Modernized toolkit for discovering sportsbook pricing gaps, running fast backtes
 ## Project Structure
 - `src/arbitrage_model/` — core library (odds math, offer models, arbitrage engine).
 - `src/arbitrage_model/scrapers/` — Selenium scrapers for DraftKings, FanDuel, Bovada, PrizePicks, Rotowire, and ESPN box scores (feature data).
+- `src/arbitrage_model/backtesting/` — scaffolding to backtest model probabilities versus historical quotes.
 - `scripts/` — runnable entrypoints; `run_arbitrage_scan.py` scans CSVs for arbs.
 - `scripts/scrape_books.py` — CLI to scrape books into `data/raw/` with a single command.
+- `scripts/run_backtest.py` — CLI to run an expected-value backtest over predictions + historical quotes.
 - `data/raw/` — sample sportsbook exports (`draftkings_props_sample.csv`, `fanduel_props_sample.csv`).
 - Legacy scrapers (`script3 … script8`) are retained for reference; new code lives under `src/` and `scripts/`.
 
@@ -43,6 +45,19 @@ Modernized toolkit for discovering sportsbook pricing gaps, running fast backtes
 - Inputs: per-book CSV with columns `players,line,over,under` (American odds; unicode minus handled).
 - Process: normalize odds → pick best over/under across books → check 1/decimal_over + 1/decimal_under < 1 → compute balanced stakes for a fixed bankroll.
 - Outputs: ranked opportunities with `edge_pct`, `stake_over`, `stake_under`, `expected_profit`.
+
+## Backtesting (scaffold)
+- Inputs: model predictions CSV (`player,market,line,prob_over`) and historical quotes in `data/raw/`.
+- Command: 
+  ```bash
+  python -m scripts.run_backtest expected_value \
+    --predictions-csv path/to/predictions.csv \
+    --quotes-dir data/raw \
+    --bankroll 1000 \
+    --kelly-clip 0.25 \
+    --min-edge-pct 0.5
+  ```
+- Behavior: computes expected-value-only bankroll change using model probabilities as truth (no realized outcomes yet). Extend by adding actual results and slippage/limits to evolve into a full P&L backtest.
 
 ## Data Collection (Scraping)
 - Selenium-based collectors exist for DraftKings, FanDuel, PrizePicks, Bovada, and ESPN box scores (see `script6(draftkings).py`, `script8 (fanduel).py`, etc.). They can be modernized by pointing `webdriver.Chrome` to your local driver and exporting to `data/raw/<book>_props_sample.csv`.
