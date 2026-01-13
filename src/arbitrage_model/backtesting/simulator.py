@@ -44,6 +44,7 @@ def simulate_expected_value(
             continue
 
         if flat_stake:
+            
             stake = flat_stake
         else:
             kelly = _kelly_fraction(prob, odds)
