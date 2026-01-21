@@ -1,6 +1,6 @@
 # Arbitrage Betting Model
 
-Modernized toolkit for discovering sportsbook pricing gaps, running fast backtests, and generating executable staking plans. Originally built to harvest NBA player-prop inefficiencies, the system ingests real-time odds across books, normalizes them into a unified market view, and surfaces two-way arbitrage plus positive expected-value wagers. A four-month historical simulation on NBA player props delivered a **14.54% expected net return**.
+Modernized toolkit for discovering sportsbook pricing gaps, running fast backtests, and generating executable staking plans. Originally built to harvest NBA player-prop inefficiencies, the system ingests real-time odds across books, normalizes them into a unified market view, and surfaces two-way arbitrage plus positive expected-value wagers. A four-month manual simulation on NBA player props delivered a **14.54% expected net return**.
 
 ## Highlights
 - Cross-book price aggregation with normalized schemas for prop markets.
